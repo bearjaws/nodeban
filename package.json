@@ -1,0 +1,31 @@
+{
+  "name": "nodeban",
+  "version": "0.0.1",
+  "description": "Kanban board written in node",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^2.10.2",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "joi": "^6.9.0",
+    "nedb": "^1.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bearjaws/nodeban"
+  },
+  "keywords": [
+    "kanban",
+    "board"
+  ],
+  "author": "Michael Bearjaws <michael.a.barajas@gmail.com>",
+  "license": "APL",
+  "bugs": {
+    "url": "https://github.com/bearjaws/nodeban/issues"
+  },
+  "homepage": "https://github.com/bearjaws/nodeban"
+}
