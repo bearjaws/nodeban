@@ -1,0 +1,13 @@
+{
+  "generator-kraken": {
+    "taskModule": "grunt",
+    "description": "kanban written in node",
+    "author": "bearjaws",
+    "templateModule": "makara",
+    "i18n": "i18n",
+    "componentPackager": "bower",
+    "cssModule": false,
+    "jsModule": "browserify",
+    "useJson": null
+  }
+}

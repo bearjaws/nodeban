@@ -1,2 +1,4 @@
-# nodeban
-Kanban board written in node
+nodeban
+===========
+
+kanban written in node

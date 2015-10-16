@@ -1,21 +1,28 @@
-var bodyParser = require('body-parser')
-var bluebird = require('bluebird');
+'use strict';
+
 var express = require('express');
-var app = express();
-// Only process JSON bodies
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-var nedb = require('nedb');
-var database = new nedb({
-    filename: './boards.db',
-    autoload: true
-});
-var promisified = bluebird.promisifyAll(database);
+var kraken = require('kraken-js');
 
-var nodeban = require('./app/index.js')(app, promisified);
-var server = app.listen(9000, function () {
-    var host = server.address().address;
-    var port = server.address().port;
 
-    console.log('Example app listening at http://%s:%s', host, port);
+var options, app;
+
+/*
+ * Create and configure application. Also exports application instance for use by tests.
+ * See https://github.com/krakenjs/kraken-js#options for additional configuration options.
+ */
+options = {
+    onconfig: function (config, next) {
+        /*
+         * Add any additional config setup or overrides here. `config` is an initialized
+         * `confit` (https://github.com/krakenjs/confit/) configuration object.
+         */
+        next(null, config);
+    }
+};
+
+app = module.exports = express();
+app.use(kraken(options));
+app.on('start', function () {
+    console.log('Application ready to serve requests.');
+    console.log('Environment: %s', app.kraken.get('env:env'));
 });
