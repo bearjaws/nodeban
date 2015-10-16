@@ -10,9 +10,8 @@ function BoardController(nedb) {
     this.nedb = nedb;
 }
 
-BoardController.prototype.createBoard = function(req, res) {
+BoardController.prototype.createBoard = function(body) {
     var self = this;
-    var body = req.body;
     return validate(body, createSchema).then(function(result) {
         return self.nedb.findAsync({
             boardName: body.boardName
@@ -22,7 +21,7 @@ BoardController.prototype.createBoard = function(req, res) {
             return bluebird.reject({
                 name: "UserError",
                 message: "Board already exists."
-            });
+            })
         }
     }).then(function() {
         var gutters = {};
