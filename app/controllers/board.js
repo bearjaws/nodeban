@@ -23,13 +23,42 @@ BoardController.prototype.createBoard = function(body) {
                 })
             }
         }).then(function() {
+            var gutters = {};
+            // Transform the gutters for the board into arrays for nedb
+            for(var i = 0; i < body.gutters.length; i++) {
+                var name = body.gutters[i];
+                gutters[name] = {
+                    items: [],
+                    order: i,
+                    name: name
+                };
+            }
+
             return self.nedb.insertAsync({
                 "boardName": body.boardName,
-                "gutters": body.gutters,
+                "gutters": gutters,
                 "createdAt": new Date()
             });
         });
     });
 };
+
+BoardController.prototype.listBoards = function() {
+    return this.nedb.findAsync({}, {boardName: 1}).then(function(documents) {
+        if(documents.length === 0) {
+            return [];
+        }
+        return documents;
+    })
+}
+
+BoardController.prototype.getBoardByName = function(name) {
+    return this.nedb.findAsync({ boardName: name}).then(function(documents) {
+        if(documents.length === 0) {
+            return [];
+        }
+        return documents;
+    })
+}
 
 module.exports = BoardController;

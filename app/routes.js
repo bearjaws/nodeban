@@ -1,17 +1,36 @@
 function Routes(express, controllers) {
-    express.get('/', function (req, res) {
-        res.send('Hello World!2');
-    });
-
     express.get('/api/status', function(req, res) {
         res.status(200).end();
     });
 
+    /**
+     * Handles creation of a kanban board.
+     *
+     * @return 400 error if the post body is invalid, the board already exists;
+     * otherwise returns 200
+     */
     express.post('/api/board/create', function(req, res) {
         return controllers.board.createBoard(req.body).then(function(test) {
             return res.status(200).json({
                 message: "Board created successfully"
             });
+        }).catch(function(err) {
+            return handleErrors(req, res, err);
+        });
+    });
+
+    express.get('/api/boards', function(req, res) {
+        return controllers.board.listBoards().then(function(boards) {
+            res.json(boards);
+        }).catch(function(err) {
+            return handleErrors(req, res, err);
+        });
+    });
+
+    express.get('/api/boards/:board', function(req, res) {
+        var name = req.params.board;
+        return controllers.board.getBoardByName(name).then(function(boards) {
+            res.json(boards);
         }).catch(function(err) {
             return handleErrors(req, res, err);
         });

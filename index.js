@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 var nedb = require('nedb');
 var database = new nedb({
-    filename: './temp.db',
+    filename: './boards.db',
     autoload: true
 });
 var promisified = bluebird.promisifyAll(database);
