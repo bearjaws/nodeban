@@ -4,7 +4,7 @@ function Routes(express, controllers) {
     });
 
     /**
-     * Handles creation of a kanban board.
+     * Route for creation of a kanban board.
      *
      * @return 400 error if the post body is invalid, the board already exists;
      * otherwise returns 200
@@ -19,6 +19,11 @@ function Routes(express, controllers) {
         });
     });
 
+    /**
+     * Gets a list of all boards available
+     *
+     * @return empty array if no boards exist, otherwise an array of board names
+     */
     express.get('/api/boards', function(req, res) {
         return controllers.board.listBoards().then(function(boards) {
             res.json(boards);
@@ -27,10 +32,19 @@ function Routes(express, controllers) {
         });
     });
 
+    /**
+     * Gets a specific board and all items it contains.
+     *
+     * @return 404 if :board does not exist, otherwise returns a board object
+     */
     express.get('/api/boards/:board', function(req, res) {
         var name = req.params.board;
         return controllers.board.getBoardByName(name).then(function(boards) {
-            res.json(boards);
+            if (boards.length === 0) {
+                res.status(404).end();
+            } else {
+                res.json(boards);
+            }
         }).catch(function(err) {
             return handleErrors(req, res, err);
         });
@@ -55,6 +69,8 @@ function handleErrors(req, res, err) {
     if (err.name === "UserError") {
         return res.status(400).json(err);
     }
+
+    return res.status(500).end();
 }
 
 module.exports = Routes;

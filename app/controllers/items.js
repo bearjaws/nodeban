@@ -2,25 +2,23 @@ var bluebird = require('bluebird');
 var joi = require('joi');
 var validate = bluebird.promisify(joi.validate);
 var createSchema = joi.object().keys({
-    boardName: joi.string().alphanum().min(3).max(24).required(),
-    gutters: joi.array().items(joi.string().required()).unique().required()
+    name: joi.string().alphanum().min(3).max(128).required()
 });
 
-function BoardController(nedb) {
+function ItemController(nedb) {
     this.nedb = nedb;
 }
 
-BoardController.prototype.createBoard = function(body) {
-    var self = this;
+ItemController.prototype.createItem = function(boardName, body) {
     return validate(body, createSchema).then(function(result) {
         return self.nedb.findAsync({
-            boardName: body.boardName
+            boardName: boardName
         });
     }).then(function(documents) {
         if (documents.length > 0) {
             return bluebird.reject({
                 name: "UserError",
-                message: "Board already exists."
+                message: "Board does not exist."
             })
         }
     }).then(function() {
@@ -41,24 +39,6 @@ BoardController.prototype.createBoard = function(body) {
             "createdAt": new Date()
         });
     });
-};
-
-BoardController.prototype.listBoards = function() {
-    return this.nedb.findAsync({}, { boardName: 1 }).then(function(documents) {
-        if(documents.length === 0) {
-            return [];
-        }
-        return documents;
-    })
 }
 
-BoardController.prototype.getBoardByName = function(name) {
-    return this.nedb.findAsync({ boardName: name}).then(function(documents) {
-        if(documents.length === 0) {
-            return [];
-        }
-        return documents;
-    })
-}
-
-module.exports = BoardController;
+module.exports = ItemController;
