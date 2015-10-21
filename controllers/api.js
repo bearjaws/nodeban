@@ -9,7 +9,7 @@ module.exports = function (router) {
 
     router.get('/', function (req, res) {
 
-
+        //@TODO Should send apidoc
         res.render('api', model);
     });
 };

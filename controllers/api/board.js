@@ -26,6 +26,11 @@ module.exports = function (router) {
 
     var boardModel = new BoardModel();
 
+    router.get('/', function (req, res) {
+        //@TODO Should send apidoc
+        res.status(200).end();
+    });
+
     router.post('/create', function (req, res) {
         var body = req.body;
         // This is the promisified version of joi validation
@@ -63,7 +68,7 @@ module.exports = function (router) {
             res.status(200).json(boards);
         }).catch(function(error) {
             errorHandler(error, req, res);
-        })
+        });
     });
 
     router.get('/:board', function(req, res) {
@@ -71,6 +76,6 @@ module.exports = function (router) {
             res.status(200).json(board);
         }).catch(function(error) {
             errorHandler(error, req, res);
-        })
+        });
     });
 };

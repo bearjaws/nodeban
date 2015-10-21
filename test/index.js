@@ -31,14 +31,10 @@ describe('index', function () {
     });
 
 
-    it('should say "hello"', function (done) {
+    it('should get 200 when requesting root', function (done) {
         request(mock)
             .get('/')
             .expect(200)
-            .expect('Content-Type', /html/)
-            
-                .expect(/Hello, /)
-            
             .end(function (err, res) {
                 done(err);
             });

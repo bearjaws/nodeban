@@ -4,6 +4,7 @@
 
 
 var kraken = require('kraken-js'),
+    fs = require('fs'),
     express = require('express'),
     path = require('path'),
     request = require('supertest');
@@ -15,33 +16,41 @@ describe('api/board', function () {
 
 
     beforeEach(function (done) {
+        // set the database env
+        process.env['nedb'] = './test/temp/api-board.db';
         app = express();
         app.on('start', done);
         app.use(kraken({
-            basedir: path.resolve(__dirname, '..')
+            basedir: path.resolve(__dirname, '../../')
         }));
 
         mock = app.listen(1337);
-
     });
 
 
     afterEach(function (done) {
-        mock.close(done);
+        fs.unlink(process.env['nedb'], function() {
+            mock.close(done);
+        })
     });
 
 
-    it('should say "hello"', function (done) {
+    it('should get 200 when getting root of subresource "board"', function (done) {
         request(mock)
             .get('/api/board')
             .expect(200)
-            .expect('Content-Type', /html/)
-            
-                .expect(/Hello, /)
-            
             .end(function (err, res) {
                 done(err);
             });
     });
 
+    it('should get no boards when none have been created', function(done) {
+        request(mock)
+            .get('/api/board/list')
+            .expect(200)
+            .expect([])
+            .end(function (err, res) {
+                done(err);
+            });
+    });
 });
