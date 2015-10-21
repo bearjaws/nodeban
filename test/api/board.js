@@ -10,18 +10,19 @@ var kraken = require('kraken-js'),
     _ = require('lodash'),
     request = require('supertest-as-promised');
 
-
+// Mock data
+var nodeban = require('../../test/data/nodeban.sample.json');
 describe('api/board', function () {
     var app, mock, db;
     var board = {
-        "boardName": "nodeban1",
+        "boardName": "nodeban",
         "gutters": ["To-Do", "In Progress", "Feature Working", "Integrated", "Complete"]
     };
     beforeEach(function (done) {
         // Pretty random numbers
         var rand = Math.floor(Math.random() * (99999999999 - 0) + 0);
         db = './test/temp/deleteme-api-board' + rand + '.db';
-        console.info('Running test in mock database: ' + db);
+        console.info('Running tests in mock database: ' + db);
         process.env['nedb'] = db;
         app = express();
         app.on('start', done);
@@ -36,10 +37,12 @@ describe('api/board', function () {
         if (fs.existsSync(db)) {
             fs.unlink(db, function(err) {
                 console.warn(err);
-                return mock.close(done);
+                mock.close();
+                done();
             });
         } else {
-            return mock.close(done);
+            mock.close();
+            done();
         }
     });
 
@@ -78,9 +81,18 @@ describe('api/board', function () {
                 return request(mock)
                     .get('/api/board/list')
                     .expect([{
-                        name: 'nodeban1'
-                    }])
-            });
+                        name: board.boardName
+                    }]);
+            }).then(function() {
+                // Need this for the createdAt date which is dynamic
+                return request(mock)
+                    .get('/api/board/nodeban');
+            }).then(function(res) {
+                nodeban.createdAt = res.body.createdAt;
+                return request(mock)
+                    .get('/api/board/nodeban')
+                    .expect(nodeban);
+        });
     });
 
     it('should validate board creation schema', function() {

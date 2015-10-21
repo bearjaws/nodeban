@@ -1,0 +1,31 @@
+{
+    "boardName": "nodeban",
+    "gutters": {
+        "To-Do": {
+            "items": [],
+            "order": 0,
+            "name": "To-Do"
+        },
+        "In Progress": {
+            "items": [],
+            "order": 1,
+            "name": "In Progress"
+        },
+        "Feature Working": {
+            "items": [],
+            "order": 2,
+            "name": "Feature Working"
+        },
+        "Integrated": {
+            "items": [],
+            "order": 3,
+            "name": "Integrated"
+        },
+        "Complete": {
+            "items": [],
+            "order": 4,
+            "name": "Complete"
+        }
+    },
+    "createdAt": "2015-10-21T02:53:19.885Z"
+}

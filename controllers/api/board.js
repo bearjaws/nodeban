@@ -79,7 +79,7 @@ module.exports = function (router) {
 
     router.get('/:board', function(req, res) {
         return boardModel.getByName(req.nedb, req.params.board).then(function(board) {
-            if(board.length === 1) {
+            if(board !== false) {
                 res.status(200).json(board);
             } else if(board.length > 1) {
                 // This should be caught else where, i.e: unique index or check in createBoard

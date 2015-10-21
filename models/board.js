@@ -25,6 +25,7 @@ BoardModel.prototype.list = function(nedb) {
 BoardModel.prototype.getByName = function(nedb, name) {
     return nedb.findAsync({boardName: name}).then(function(documents) {
         if(documents.length > 0) {
+            delete documents[0]._id;
             return documents[0];
         }
         return false;
