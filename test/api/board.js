@@ -24,7 +24,6 @@ describe('api/board', function () {
         db = './test/temp/deleteme-api-board' + rand + '.db';
         console.info('Running tests in mock database: ' + db);
         process.env['nedb'] = db;
-        
         app = express();
         app.on('start', done);
         app.use(kraken({
