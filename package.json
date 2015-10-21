@@ -16,7 +16,9 @@
     "express": "^4.12.2",
     "joi": "^6.9.1",
     "kraken-js": "^1.0.3",
-    "nedb": "^1.2.1"
+    "lodash": "^3.10.1",
+    "nedb": "^1.2.1",
+    "supertest-as-promised": "^2.0.2"
   },
   "devDependencies": {
     "mocha": "^1.18.0",

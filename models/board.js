@@ -13,12 +13,21 @@ BoardModel.prototype.create = function(nedb, body, gutters) {
 };
 
 BoardModel.prototype.list = function(nedb) {
-    return nedb.findAsync({}, { boardName: 1 });
+    return nedb.findAsync({}, { boardName: 1 }).then(function(documents) {
+        return documents.map(function(document) {
+            return {
+                name: document.boardName
+            };
+        });
+    });
 };
 
 BoardModel.prototype.getByName = function(nedb, name) {
     return nedb.findAsync({boardName: name}).then(function(documents) {
-        return documents;
+        if(documents.length > 0) {
+            return documents[0];
+        }
+        return false;
     });
 };
 

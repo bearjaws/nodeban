@@ -30,3 +30,4 @@ node_modules
 #nedb
 temp.db
 boards.db
+test/temp/deleteme*
